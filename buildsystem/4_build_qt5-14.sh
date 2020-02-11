@@ -27,7 +27,7 @@ fi
 cd $HOME/qt514_build
 
 PKG_CONFIG_LIBDIR=/usr/lib/arm-linux-gnueabihf/pkgconfig:/usr/share/pkgconfig \
-$HOME/qt514/src/qt-everywhere-src-5.14.1/configure -device linux-rasp-pi3-g++ \
+$HOME/qt514/src/qt-everywhere-src-5.14.1/configure -device linux-rasp-pi3-vc4-g++ \
 -device-option CROSS_COMPILE=arm-linux-gnueabihf- \
 -sysroot / \
 -v \
