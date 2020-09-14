@@ -32,7 +32,9 @@ jobs:
       -
         name: Run build
         id: build-docker
-        run: bash ./build-docker.sh
+        run: |
+          bash ./build-docker.sh
+          bash ./checkdeployment.sh
         working-directory: dockerbuildsystem
       - 
         name: Create Release
