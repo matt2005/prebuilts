@@ -25,6 +25,11 @@ jobs:
           image: tonistiigi/binfmt:latest
           platforms: all
       -
+        name: Set Permissions
+        id: set-permissions
+        run: find . -type f -iname "*.sh" -exec chmod +x {} \;
+        working-directory: dockerbuildsystem
+      -
         name: Run build
         id: build-docker
         run: bash ./build-docker.sh
