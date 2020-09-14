@@ -28,6 +28,7 @@ jobs:
         name: Run build
         id: build-docker
         run: bash ./build-docker.sh
+        working-directory: dockerbuildsystem
       - 
         name: Create Release
         id: create_release
@@ -48,6 +49,7 @@ jobs:
           ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
           echo ::set-output name=artifact_filename::${ARTIFACT_NAME}
           echo ::set-output name=artifact_path::${ARTIFACT_PATHNAME}
+        working-directory: dockerbuildsystem
       - 
         name: Upload Release Asset
         id: upload-release-asset 
