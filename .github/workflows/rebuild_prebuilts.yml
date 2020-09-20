@@ -55,7 +55,7 @@ jobs:
             ./pi-gen/deploy/*.info
             ./pi-gen/deploy/*.zip
             ./pi-gen/deploy/build.log
-        working-directory: dockerbuildsystem
+          working-directory: dockerbuildsystem
   release:
     runs-on: ubuntu-latest
     steps:
