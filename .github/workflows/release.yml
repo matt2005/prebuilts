@@ -7,7 +7,7 @@ on:
         description: 'Version'
 
 jobs:
-  docker:
+  release:
     runs-on: ubuntu-latest
     steps:
       - 
@@ -22,7 +22,7 @@ jobs:
           draft: true
           prerelease: true
       - 
-        name: Download math result for job 2
+        name: Download artifact
         uses: actions/download-artifact@v2
         with:
           name: deploy
