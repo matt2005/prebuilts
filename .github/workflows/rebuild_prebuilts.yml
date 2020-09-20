@@ -55,4 +55,3 @@ jobs:
             ./dockerbuildsystem/pi-gen/deploy/*.info
             ./dockerbuildsystem/pi-gen/deploy/*.zip
             ./dockerbuildsystem/pi-gen/deploy/build.log
-
