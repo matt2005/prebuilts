@@ -1,4 +1,4 @@
-ame: build
+name: crosscompile-binaries
 
 on:
 #  schedule:
