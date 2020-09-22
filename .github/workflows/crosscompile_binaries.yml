@@ -43,7 +43,6 @@ jobs:
         name: pi-gen setup
         id: pi-gen_setup
         run: |
-          cd ./pi-gen
           cat > config <<EOF
           IMG_NAME='${version}'
           EOF
@@ -51,6 +50,7 @@ jobs:
           touch ./stage3/SKIP_IMAGES ./stage4/SKIP_IMAGES ./stage5/SKIP_IMAGES
         env:
           version: ${{ steps.get_version.outputs.version }}
+        working-directory: pi-gen
       -
         name: Compile
         id: compile
@@ -76,7 +76,7 @@ jobs:
           END
           EOF
           chmod +x 00-install-dash/01-run.sh
-        working-directory: ./pi-gen
+        working-directory: pi-gen
         env:
           version: ${{ steps.get_version.outputs.version }}
       -
@@ -84,18 +84,18 @@ jobs:
        id: show_config
        run: |
           cat config
-       working-directory: ./pi-gen
+       working-directory: pi-gen
       -
         name: Run build
         id: build-docker
         run: bash ./build-docker.sh
-        working-directory: ./pi-gen
+        working-directory: pi-gen
       -
         name: list files
         id: list_files
         run: |
            ls -Rhla
-        working-directory: ./pi-gen
+        working-directory: pi-gen
       - 
         name: Upload build artifacts 
         id: upload_deploy
@@ -103,7 +103,7 @@ jobs:
         with:
           name: deploy
           path: |
-            ./pi-gen/deploy/BINARY_FILES/*
+            pi-gen/deploy/BINARY_FILES/*
   release:
     needs: [build]
     if: ${{ success() }}
