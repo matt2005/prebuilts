@@ -57,22 +57,6 @@ jobs:
           cat > 00-build/00-packages <<EOF
           git
           EOF
-#          cat > 00-build/00-run.sh <<EOF
-#          #!/bin/bash -e
-#          
-#          on_chroot << END
-#          echo '>>> Set Debian frontend to Noninteractive'
-#          echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
-#          export DEBIAN_FRONTEND=noninteractive
-#          echo '>>> Update CA certs for a secure connection to GitHub'
-#          update-ca-certificates -f
-#          echo '>>> Download latest Repo'
-#          git clone --depth=1 https://github.com/matt2005/prebuilts.git /home/${FIRST_USER_NAME}/prebuilts
-#          chmod -R 775 /home/${FIRST_USER_NAME}/prebuilts
-#          chown -R ${FIRST_USER_NAME}:${FIRST_USER_NAME} /home/${FIRST_USER_NAME}/prebuilts
-#          END
-#          EOF
-#          chmod +x 00-install-dash/00-run.sh
           cat > 00-install-dash/01-run.sh <<EOF
           #!/bin/bash -e
           on_chroot << END
