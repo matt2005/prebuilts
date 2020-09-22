@@ -19,6 +19,12 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: true
+      - 
+        name: Checkout pi-gen
+        uses: actions/checkout@v2
+        with:
+          repository: RPi-Distro/pi-gen
+          path: pi-gen
       -
         name: Set up QEMU
         id: qemu
@@ -37,7 +43,6 @@ jobs:
         name: pi-gen setup
         id: pi-gen_setup
         run: |
-          git clone https://github.com/RPi-Distro/pi-gen.git
           cd ./pi-gen
           cat > config <<EOF
           IMG_NAME='${version}'
