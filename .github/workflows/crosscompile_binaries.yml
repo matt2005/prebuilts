@@ -1,0 +1,156 @@
+ame: build
+
+on:
+#  schedule:
+#    - cron: '0 10 * * *' # everyday at 10am
+
+#  pull_request:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      -
+        name: Set up QEMU
+        id: qemu
+        uses: docker/setup-qemu-action@v1
+        with:
+          image: tonistiigi/binfmt:latest
+          platforms: all
+      - 
+        name: Get the version
+        id: get_version
+        run: |
+          echo ::set-output name=version::"${version}"
+        env:
+          version: ${{ github.event.inputs.version }}
+      - 
+        name: pi-gen config
+        id: pi-gen_config
+        run: |
+          cat > config <<EOF
+          IMG_NAME='${version}'
+          EOF
+          touch ./stage4/SKIP ./stage5/SKIP
+          touch ./stage3/SKIP_IMAGES ./stage4/SKIP_IMAGES ./stage5/SKIP_IMAGES
+        working-directory: ./pi-gen
+        env:
+          version: ${{ steps.get_version.outputs.version }}
+      -
+        name: Compile
+        id: compile
+        run: |
+          rm -rf ./stage3 ./stage4 ./stage5
+          mkdir -p ./stage3/00-build
+          cd ./stage3
+          cp ../stage2/prerun.sh prerun.sh
+          chmod +x prerun.sh
+          cat > 00-build/00-packages <<EOF
+          git
+          EOF
+#          cat > 00-build/00-run.sh <<EOF
+#          #!/bin/bash -e
+#          
+#          on_chroot << END
+#          echo '>>> Set Debian frontend to Noninteractive'
+#          echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+#          export DEBIAN_FRONTEND=noninteractive
+#          echo '>>> Update CA certs for a secure connection to GitHub'
+#          update-ca-certificates -f
+#          echo '>>> Download latest Repo'
+#          git clone --depth=1 https://github.com/matt2005/prebuilts.git /home/${FIRST_USER_NAME}/prebuilts
+#          chmod -R 775 /home/${FIRST_USER_NAME}/prebuilts
+#          chown -R ${FIRST_USER_NAME}:${FIRST_USER_NAME} /home/${FIRST_USER_NAME}/prebuilts
+#          END
+#          EOF
+#          chmod +x 00-install-dash/00-run.sh
+          cat > 00-install-dash/01-run.sh <<EOF
+          #!/bin/bash -e
+          on_chroot << END
+          echo "Build Prebuilts"
+          cd /home/${FIRST_USER_NAME}/prebuilts/buildsystem
+          find . -type f -iname "*.sh" -exec {} \;
+          for script in `ls *.sh | sort -n`; do printf "Executing script: %s\n" "$script"; ./"$script"; done;
+          for file in `ls BINARY_FILES/* | sort -n`; do printf "Generating MD5 for: %s\n" "$file"; md5sum "$script" > "$script".md5; done;
+          mkdir -p "${DEPLOY_DIR}"
+          cp -Rv BINARY_FILES "${DEPLOY_DIR}"
+          END
+          EOF
+          chmod +x 00-install-dash/01-run.sh
+        working-directory: ./pi-gen
+        env:
+          version: ${{ steps.get_version.outputs.version }}
+      -
+       name: show config
+       id: show_config
+       run: |
+          cat config
+       working-directory: ./pi-gen
+      -
+        name: Run build
+        id: build-docker
+        run: bash ./build-docker.sh
+        working-directory: ./pi-gen
+      -
+        name: list files
+        id: list_files
+        run: |
+           ls -Rhla
+        working-directory: ./pi-gen
+      - 
+        name: Upload build artifacts 
+        id: upload_deploy
+        uses: actions/upload-artifact@v2
+        with:
+          name: deploy
+          path: |
+            ./pi-gen/deploy/BINARY_FILES/*
+  release:
+    needs: [build]
+    if: ${{ success() }}
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          release_name: Release ${{ github.event.inputs.version }}
+          draft: true
+          prerelease: true
+      - 
+        name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: deploy
+      - 
+        name: Get Release File Name & Upload URL
+        id: get_release_info
+        run: |
+          ARTIFACT_PATHNAME=$(ls *.zip | head -n 1)
+          ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
+          echo ::set-output name=artifact_filename::${ARTIFACT_NAME}
+          echo ::set-output name=artifact_path::${ARTIFACT_PATHNAME}
+      - 
+        name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ${{ steps.get_release_info.outputs.artifact_path }}
+          asset_name: ${{ steps.get_release_info.outputs.artifact_filename }}
+          asset_content_type: application/zip
