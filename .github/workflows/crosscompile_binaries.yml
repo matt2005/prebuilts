@@ -63,7 +63,7 @@ jobs:
           cat > 00-build/00-packages <<EOF
           git
           EOF
-          cat > 00-install-dash/01-run.sh <<EOF
+          cat > 00-build/01-run.sh <<EOF
           #!/bin/bash -e
           on_chroot << END
           echo "Build Prebuilts"
@@ -75,7 +75,7 @@ jobs:
           cp -Rv BINARY_FILES "${DEPLOY_DIR}"
           END
           EOF
-          chmod +x 00-install-dash/01-run.sh
+          chmod +x 00-build/01-run.sh
         working-directory: pi-gen
         env:
           version: ${{ steps.get_version.outputs.version }}
