@@ -112,7 +112,7 @@ jobs:
                 ubuntu*|jessie|stretch|buster)
                 apt-get update -q -y
                 apt-get install -q -y git apt-utils autoconf cmake zip build-essential
-                apt-get install -q -y qml-module-qtmultimedia, libunwind-dev, libgstreamer-plugins-bad1.0-dev, qt5-default, qtdeclarative5-dev, libgstreamer-plugins-base1.0-dev, gstreamer1.0-alsa, gstreamer1.0-libav, gstreamer1.0-plugins-bad, gstreamer1.0-plugins-base-apps, libgstreamer1.0-dev, libglib2.0-dev, qml-module-qtquick2, libtag1-dev, libkf5bluezqt-dev, librtaudio6, librtaudio-dev, pulseaudio, qtconnectivity5-dev, libqt5bluetooth5-bin, libqt5bluetooth5, qtmultimedia5-dev, libqt5multimediawidgets5, libqt5multimedia5-plugins, libqt5multimedia5, protobuf-compiler, protobuf-c-compiler, libprotobuf-dev, libssl-dev, libusb-1.0.0-dev, libboost-all-dev, cmake, alsa-utils
+                apt install -y qml-module-qtmultimedia libunwind-dev libgstreamer-plugins-bad1.0-dev qt5-default qtdeclarative5-dev libgstreamer-plugins-base1.0-dev gstreamer1.0-alsa gstreamer1.0-libav gstreamer1.0-plugins-bad gstreamer1.0-plugins-base-apps libgstreamer1.0-dev libglib2.0-dev qml-module-qtquick2 libtag1-dev libkf5bluezqt-dev librtaudio6 librtaudio-dev pulseaudio qtconnectivity5-dev libqt5bluetooth5-bin libqt5bluetooth5 qtmultimedia5-dev libqt5multimediawidgets5 libqt5multimedia5-plugins libqt5multimedia5 protobuf-compiler protobuf-c-compiler libprotobuf-dev libssl-dev libusb-1.0.0-dev libboost-all-dev cmake alsa-utils
                 ;;
                 fedora*)
                 dnf -y update
@@ -166,8 +166,8 @@ jobs:
             case "${{ matrix.distro }}" in
                 ubuntu*|jessie|stretch|buster)
                 apt-get update -q -y
-                apt-get install -q -y git
-                apt-get install -q -y qml-module-qtmultimedia, libunwind-dev, libgstreamer-plugins-bad1.0-dev, qt5-default, qtdeclarative5-dev, libgstreamer-plugins-base1.0-dev, gstreamer1.0-alsa, gstreamer1.0-libav, gstreamer1.0-plugins-bad, gstreamer1.0-plugins-base-apps, libgstreamer1.0-dev, libglib2.0-dev, qml-module-qtquick2, libtag1-dev, libkf5bluezqt-dev, librtaudio6, librtaudio-dev, pulseaudio, qtconnectivity5-dev, libqt5bluetooth5-bin, libqt5bluetooth5, qtmultimedia5-dev, libqt5multimediawidgets5, libqt5multimedia5-plugins, libqt5multimedia5, protobuf-compiler, protobuf-c-compiler, libprotobuf-dev, libssl-dev, libusb-1.0.0-dev, libboost-all-dev, cmake, alsa-utils
+                apt-get install -q -y git apt-utils autoconf cmake zip build-essential
+                apt install -y qml-module-qtmultimedia libunwind-dev libgstreamer-plugins-bad1.0-dev qt5-default qtdeclarative5-dev libgstreamer-plugins-base1.0-dev gstreamer1.0-alsa gstreamer1.0-libav gstreamer1.0-plugins-bad gstreamer1.0-plugins-base-apps libgstreamer1.0-dev libglib2.0-dev qml-module-qtquick2 libtag1-dev libkf5bluezqt-dev librtaudio6 librtaudio-dev pulseaudio qtconnectivity5-dev libqt5bluetooth5-bin libqt5bluetooth5 qtmultimedia5-dev libqt5multimediawidgets5 libqt5multimedia5-plugins libqt5multimedia5 protobuf-compiler protobuf-c-compiler libprotobuf-dev libssl-dev libusb-1.0.0-dev libboost-all-dev cmake alsa-utils
                 ;;
                 fedora*)
                 dnf -y update
@@ -221,8 +221,8 @@ jobs:
             case "${{ matrix.distro }}" in
                 ubuntu*|jessie|stretch|buster)
                 apt-get update -q -y
-                apt-get install -q -y git
-                apt-get install -q -y qml-module-qtmultimedia, libunwind-dev, libgstreamer-plugins-bad1.0-dev, qt5-default, qtdeclarative5-dev, libgstreamer-plugins-base1.0-dev, gstreamer1.0-alsa, gstreamer1.0-libav, gstreamer1.0-plugins-bad, gstreamer1.0-plugins-base-apps, libgstreamer1.0-dev, libglib2.0-dev, qml-module-qtquick2, libtag1-dev, libkf5bluezqt-dev, librtaudio6, librtaudio-dev, pulseaudio, qtconnectivity5-dev, libqt5bluetooth5-bin, libqt5bluetooth5, qtmultimedia5-dev, libqt5multimediawidgets5, libqt5multimedia5-plugins, libqt5multimedia5, protobuf-compiler, protobuf-c-compiler, libprotobuf-dev, libssl-dev, libusb-1.0.0-dev, libboost-all-dev, cmake, alsa-utils
+                apt-get install -q -y git apt-utils autoconf cmake zip build-essential
+                apt install -y qml-module-qtmultimedia libunwind-dev libgstreamer-plugins-bad1.0-dev qt5-default qtdeclarative5-dev libgstreamer-plugins-base1.0-dev gstreamer1.0-alsa gstreamer1.0-libav gstreamer1.0-plugins-bad gstreamer1.0-plugins-base-apps libgstreamer1.0-dev libglib2.0-dev qml-module-qtquick2 libtag1-dev libkf5bluezqt-dev librtaudio6 librtaudio-dev pulseaudio qtconnectivity5-dev libqt5bluetooth5-bin libqt5bluetooth5 qtmultimedia5-dev libqt5multimediawidgets5 libqt5multimedia5-plugins libqt5multimedia5 protobuf-compiler protobuf-c-compiler libprotobuf-dev libssl-dev libusb-1.0.0-dev libboost-all-dev cmake alsa-utils
                 ;;
                 fedora*)
                 dnf -y update
@@ -276,8 +276,8 @@ jobs:
             case "${{ matrix.distro }}" in
                 ubuntu*|jessie|stretch|buster)
                 apt-get update -q -y
-                apt-get install -q -y git
-                apt-get install -q -y qml-module-qtmultimedia, libunwind-dev, libgstreamer-plugins-bad1.0-dev, qt5-default, qtdeclarative5-dev, libgstreamer-plugins-base1.0-dev, gstreamer1.0-alsa, gstreamer1.0-libav, gstreamer1.0-plugins-bad, gstreamer1.0-plugins-base-apps, libgstreamer1.0-dev, libglib2.0-dev, qml-module-qtquick2, libtag1-dev, libkf5bluezqt-dev, librtaudio6, librtaudio-dev, pulseaudio, qtconnectivity5-dev, libqt5bluetooth5-bin, libqt5bluetooth5, qtmultimedia5-dev, libqt5multimediawidgets5, libqt5multimedia5-plugins, libqt5multimedia5, protobuf-compiler, protobuf-c-compiler, libprotobuf-dev, libssl-dev, libusb-1.0.0-dev, libboost-all-dev, cmake, alsa-utils
+                apt-get install -q -y git apt-utils autoconf cmake zip build-essential
+                apt install -y qml-module-qtmultimedia libunwind-dev libgstreamer-plugins-bad1.0-dev qt5-default qtdeclarative5-dev libgstreamer-plugins-base1.0-dev gstreamer1.0-alsa gstreamer1.0-libav gstreamer1.0-plugins-bad gstreamer1.0-plugins-base-apps libgstreamer1.0-dev libglib2.0-dev qml-module-qtquick2 libtag1-dev libkf5bluezqt-dev librtaudio6 librtaudio-dev pulseaudio qtconnectivity5-dev libqt5bluetooth5-bin libqt5bluetooth5 qtmultimedia5-dev libqt5multimediawidgets5 libqt5multimedia5-plugins libqt5multimedia5 protobuf-compiler protobuf-c-compiler libprotobuf-dev libssl-dev libusb-1.0.0-dev libboost-all-dev cmake alsa-utils
                 ;;
                 fedora*)
                 dnf -y update
@@ -331,8 +331,8 @@ jobs:
             case "${{ matrix.distro }}" in
                 ubuntu*|jessie|stretch|buster)
                 apt-get update -q -y
-                apt-get install -q -y git apt5-utils
-                apt-get install -q -y qml-module-qtmultimedia, libunwind-dev, libgstreamer-plugins-bad1.0-dev, qt5-default, qtdeclarative5-dev, libgstreamer-plugins-base1.0-dev, gstreamer1.0-alsa, gstreamer1.0-libav, gstreamer1.0-plugins-bad, gstreamer1.0-plugins-base-apps, libgstreamer1.0-dev, libglib2.0-dev, qml-module-qtquick2, libtag1-dev, libkf5bluezqt-dev, librtaudio6, librtaudio-dev, pulseaudio, qtconnectivity5-dev, libqt5bluetooth5-bin, libqt5bluetooth5, qtmultimedia5-dev, libqt5multimediawidgets5, libqt5multimedia5-plugins, libqt5multimedia5, protobuf-compiler, protobuf-c-compiler, libprotobuf-dev, libssl-dev, libusb-1.0.0-dev, libboost-all-dev, cmake, alsa-utils
+                apt-get install -q -y git apt-utils autoconf cmake zip build-essential
+                apt install -y qml-module-qtmultimedia libunwind-dev libgstreamer-plugins-bad1.0-dev qt5-default qtdeclarative5-dev libgstreamer-plugins-base1.0-dev gstreamer1.0-alsa gstreamer1.0-libav gstreamer1.0-plugins-bad gstreamer1.0-plugins-base-apps libgstreamer1.0-dev libglib2.0-dev qml-module-qtquick2 libtag1-dev libkf5bluezqt-dev librtaudio6 librtaudio-dev pulseaudio qtconnectivity5-dev libqt5bluetooth5-bin libqt5bluetooth5 qtmultimedia5-dev libqt5multimediawidgets5 libqt5multimedia5-plugins libqt5multimedia5 protobuf-compiler protobuf-c-compiler libprotobuf-dev libssl-dev libusb-1.0.0-dev libboost-all-dev cmake alsa-utils
                 ;;
                 fedora*)
                 dnf -y update
