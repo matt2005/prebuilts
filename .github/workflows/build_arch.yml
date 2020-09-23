@@ -14,10 +14,10 @@ jobs:
         include:
           - arch: armv6
             distro: buster
-#          - arch: armv7
-#            distro: buster
-#          - arch: aarch64
-#            distro: buster
+          - arch: armv7
+            distro: buster
+          - arch: aarch64
+            distro: buster
 
     steps:
       - uses: actions/checkout@v2.1.0
