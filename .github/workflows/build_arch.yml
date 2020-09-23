@@ -56,7 +56,7 @@ jobs:
             case "${{ matrix.distro }}" in
               ubuntu*|jessie|stretch|buster)
                 apt-get update -q -y
-                apt-get install -q -y git apt-utils
+                apt-get install -q -y git apt-utils autoconf cmake zip build-essential
                 apt install -y qml-module-qtmultimedia libunwind-dev libgstreamer-plugins-bad1.0-dev qt5-default qtdeclarative5-dev libgstreamer-plugins-base1.0-dev gstreamer1.0-alsa gstreamer1.0-libav gstreamer1.0-plugins-bad gstreamer1.0-plugins-base-apps libgstreamer1.0-dev libglib2.0-dev qml-module-qtquick2 libtag1-dev libkf5bluezqt-dev librtaudio6 librtaudio-dev pulseaudio qtconnectivity5-dev libqt5bluetooth5-bin libqt5bluetooth5 qtmultimedia5-dev libqt5multimediawidgets5 libqt5multimedia5-plugins libqt5multimedia5 protobuf-compiler protobuf-c-compiler libprotobuf-dev libssl-dev libusb-1.0.0-dev libboost-all-dev cmake alsa-utils
                 ;;
               fedora*)
@@ -80,276 +80,276 @@ jobs:
         name: Build ilclient
         id: build_ilclient
         with:
-            arch: ${{ matrix.arch }}
-            distro: ${{ matrix.distro }}
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.distro }}
 
-            # Not required, but speeds up builds
-            githubToken: ${{ github.token }}
+          # Not required, but speeds up builds
+          githubToken: ${{ github.token }}
 
-            # Create an artifacts directory
-            setup: |
-              mkdir -p "${PWD}/artifacts"
+          # Create an artifacts directory
+          setup: |
+            mkdir -p "${PWD}/artifacts"
 
-            # Mount the artifacts directory as /artifacts in the container
-            dockerRunArgs: |
-              --volume "${PWD}/artifacts:/artifacts"
+          # Mount the artifacts directory as /artifacts in the container
+          dockerRunArgs: |
+            --volume "${PWD}/artifacts:/artifacts"
 
-            # Pass some environment variables to the container
-            env: | # YAML, but pipe character is necessary
-              artifact_name: ilclient-${{ matrix.distro }}_${{ matrix.arch }}
+          # Pass some environment variables to the container
+          env: | # YAML, but pipe character is necessary
+            artifact_name: ilclient-${{ matrix.distro }}_${{ matrix.arch }}
 
-            # The shell to run commands with in the container
-            shell: /bin/sh
+          # The shell to run commands with in the container
+          shell: /bin/sh
 
-            # Install some dependencies in the container. This speeds up builds if
-            # you are also using githubToken. Any dependencies installed here will
-            # be part of the container image that gets cached, so subsequent
-            # builds don't have to re-install them. The image layer is cached
-            # publicly in your project's package repository, so it is vital that
-            # no secrets are present in the container state or logs.
-            install: |
-              case "${{ matrix.distro }}" in
-                  ubuntu*|jessie|stretch|buster)
-                  apt-get update -q -y
-                  apt-get install -q -y git
-                  apt-get install -q -y qml-module-qtmultimedia, libunwind-dev, libgstreamer-plugins-bad1.0-dev, qt5-default, qtdeclarative5-dev, libgstreamer-plugins-base1.0-dev, gstreamer1.0-alsa, gstreamer1.0-libav, gstreamer1.0-plugins-bad, gstreamer1.0-plugins-base-apps, libgstreamer1.0-dev, libglib2.0-dev, qml-module-qtquick2, libtag1-dev, libkf5bluezqt-dev, librtaudio6, librtaudio-dev, pulseaudio, qtconnectivity5-dev, libqt5bluetooth5-bin, libqt5bluetooth5, qtmultimedia5-dev, libqt5multimediawidgets5, libqt5multimedia5-plugins, libqt5multimedia5, protobuf-compiler, protobuf-c-compiler, libprotobuf-dev, libssl-dev, libusb-1.0.0-dev, libboost-all-dev, cmake, alsa-utils
-                  ;;
-                  fedora*)
-                  dnf -y update
-                  dnf -y install git which
-                  ;;
-                  alpine*)
-                  apk update
-                  apk add git
-                  ;;
-              esac
+          # Install some dependencies in the container. This speeds up builds if
+          # you are also using githubToken. Any dependencies installed here will
+          # be part of the container image that gets cached, so subsequent
+          # builds don't have to re-install them. The image layer is cached
+          # publicly in your project's package repository, so it is vital that
+          # no secrets are present in the container state or logs.
+          install: |
+            case "${{ matrix.distro }}" in
+                ubuntu*|jessie|stretch|buster)
+                apt-get update -q -y
+                apt-get install -q -y git apt-utils autoconf cmake zip build-essential
+                apt-get install -q -y qml-module-qtmultimedia, libunwind-dev, libgstreamer-plugins-bad1.0-dev, qt5-default, qtdeclarative5-dev, libgstreamer-plugins-base1.0-dev, gstreamer1.0-alsa, gstreamer1.0-libav, gstreamer1.0-plugins-bad, gstreamer1.0-plugins-base-apps, libgstreamer1.0-dev, libglib2.0-dev, qml-module-qtquick2, libtag1-dev, libkf5bluezqt-dev, librtaudio6, librtaudio-dev, pulseaudio, qtconnectivity5-dev, libqt5bluetooth5-bin, libqt5bluetooth5, qtmultimedia5-dev, libqt5multimediawidgets5, libqt5multimedia5-plugins, libqt5multimedia5, protobuf-compiler, protobuf-c-compiler, libprotobuf-dev, libssl-dev, libusb-1.0.0-dev, libboost-all-dev, cmake, alsa-utils
+                ;;
+                fedora*)
+                dnf -y update
+                dnf -y install git which
+                ;;
+                alpine*)
+                apk update
+                apk add git
+                ;;
+            esac
 
-            # Produce a binary artifact and place it in the mounted volume
-            run: |
-              cd buildsystem
-              ./3_build_ilclient.sh
-              cp $(which git) "/artifacts/${artifact_name}"
-              echo "Produced artifact at /artifacts/${artifact_name}"
+          # Produce a binary artifact and place it in the mounted volume
+          run: |
+            cd buildsystem
+            ./3_build_ilclient.sh
+            cp $(which git) "/artifacts/${artifact_name}"
+            echo "Produced artifact at /artifacts/${artifact_name}"
 
       - uses: uraimo/run-on-arch-action@v2.0.5
         name: Build openauto
         id: build_openauto
         with:
-            arch: ${{ matrix.arch }}
-            distro: ${{ matrix.distro }}
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.distro }}
 
-            # Not required, but speeds up builds
-            githubToken: ${{ github.token }}
+          # Not required, but speeds up builds
+          githubToken: ${{ github.token }}
 
-            # Create an artifacts directory
-            setup: |
-              mkdir -p "${PWD}/artifacts"
+          # Create an artifacts directory
+          setup: |
+            mkdir -p "${PWD}/artifacts"
 
-            # Mount the artifacts directory as /artifacts in the container
-            dockerRunArgs: |
-              --volume "${PWD}/artifacts:/artifacts"
+          # Mount the artifacts directory as /artifacts in the container
+          dockerRunArgs: |
+            --volume "${PWD}/artifacts:/artifacts"
 
-            # Pass some environment variables to the container
-            env: | # YAML, but pipe character is necessary
-              artifact_name: openauto-${{ matrix.distro }}_${{ matrix.arch }}
+          # Pass some environment variables to the container
+          env: | # YAML, but pipe character is necessary
+            artifact_name: openauto-${{ matrix.distro }}_${{ matrix.arch }}
 
-            # The shell to run commands with in the container
-            shell: /bin/sh
+          # The shell to run commands with in the container
+          shell: /bin/sh
 
-            # Install some dependencies in the container. This speeds up builds if
-            # you are also using githubToken. Any dependencies installed here will
-            # be part of the container image that gets cached, so subsequent
-            # builds don't have to re-install them. The image layer is cached
-            # publicly in your project's package repository, so it is vital that
-            # no secrets are present in the container state or logs.
-            install: |
-              case "${{ matrix.distro }}" in
-                  ubuntu*|jessie|stretch|buster)
-                  apt-get update -q -y
-                  apt-get install -q -y git
-                  apt-get install -q -y qml-module-qtmultimedia, libunwind-dev, libgstreamer-plugins-bad1.0-dev, qt5-default, qtdeclarative5-dev, libgstreamer-plugins-base1.0-dev, gstreamer1.0-alsa, gstreamer1.0-libav, gstreamer1.0-plugins-bad, gstreamer1.0-plugins-base-apps, libgstreamer1.0-dev, libglib2.0-dev, qml-module-qtquick2, libtag1-dev, libkf5bluezqt-dev, librtaudio6, librtaudio-dev, pulseaudio, qtconnectivity5-dev, libqt5bluetooth5-bin, libqt5bluetooth5, qtmultimedia5-dev, libqt5multimediawidgets5, libqt5multimedia5-plugins, libqt5multimedia5, protobuf-compiler, protobuf-c-compiler, libprotobuf-dev, libssl-dev, libusb-1.0.0-dev, libboost-all-dev, cmake, alsa-utils
-                  ;;
-                  fedora*)
-                  dnf -y update
-                  dnf -y install git which
-                  ;;
-                  alpine*)
-                  apk update
-                  apk add git
-                  ;;
-              esac
+          # Install some dependencies in the container. This speeds up builds if
+          # you are also using githubToken. Any dependencies installed here will
+          # be part of the container image that gets cached, so subsequent
+          # builds don't have to re-install them. The image layer is cached
+          # publicly in your project's package repository, so it is vital that
+          # no secrets are present in the container state or logs.
+          install: |
+            case "${{ matrix.distro }}" in
+                ubuntu*|jessie|stretch|buster)
+                apt-get update -q -y
+                apt-get install -q -y git
+                apt-get install -q -y qml-module-qtmultimedia, libunwind-dev, libgstreamer-plugins-bad1.0-dev, qt5-default, qtdeclarative5-dev, libgstreamer-plugins-base1.0-dev, gstreamer1.0-alsa, gstreamer1.0-libav, gstreamer1.0-plugins-bad, gstreamer1.0-plugins-base-apps, libgstreamer1.0-dev, libglib2.0-dev, qml-module-qtquick2, libtag1-dev, libkf5bluezqt-dev, librtaudio6, librtaudio-dev, pulseaudio, qtconnectivity5-dev, libqt5bluetooth5-bin, libqt5bluetooth5, qtmultimedia5-dev, libqt5multimediawidgets5, libqt5multimedia5-plugins, libqt5multimedia5, protobuf-compiler, protobuf-c-compiler, libprotobuf-dev, libssl-dev, libusb-1.0.0-dev, libboost-all-dev, cmake, alsa-utils
+                ;;
+                fedora*)
+                dnf -y update
+                dnf -y install git which
+                ;;
+                alpine*)
+                apk update
+                apk add git
+                ;;
+            esac
 
-            # Produce a binary artifact and place it in the mounted volume
-            run: |
-              cd buildsystem
-              ./5_build_openauto.sh
-              cp $(which git) "/artifacts/${artifact_name}"
-              echo "Produced artifact at /artifacts/${artifact_name}"
+          # Produce a binary artifact and place it in the mounted volume
+          run: |
+            cd buildsystem
+            ./5_build_openauto.sh
+            cp $(which git) "/artifacts/${artifact_name}"
+            echo "Produced artifact at /artifacts/${artifact_name}"
 
       - uses: uraimo/run-on-arch-action@v2.0.5
         name: Build gpio2kbd
         id: build_gpio2kbd
         with:
-            arch: ${{ matrix.arch }}
-            distro: ${{ matrix.distro }}
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.distro }}
 
-            # Not required, but speeds up builds
-            githubToken: ${{ github.token }}
+          # Not required, but speeds up builds
+          githubToken: ${{ github.token }}
 
-            # Create an artifacts directory
-            setup: |
-              mkdir -p "${PWD}/artifacts"
+          # Create an artifacts directory
+          setup: |
+            mkdir -p "${PWD}/artifacts"
 
-            # Mount the artifacts directory as /artifacts in the container
-            dockerRunArgs: |
-              --volume "${PWD}/artifacts:/artifacts"
+          # Mount the artifacts directory as /artifacts in the container
+          dockerRunArgs: |
+            --volume "${PWD}/artifacts:/artifacts"
 
-            # Pass some environment variables to the container
-            env: | # YAML, but pipe character is necessary
-              artifact_name: gpio2kbd-${{ matrix.distro }}_${{ matrix.arch }}
+          # Pass some environment variables to the container
+          env: | # YAML, but pipe character is necessary
+            artifact_name: gpio2kbd-${{ matrix.distro }}_${{ matrix.arch }}
 
-            # The shell to run commands with in the container
-            shell: /bin/sh
+          # The shell to run commands with in the container
+          shell: /bin/sh
 
-            # Install some dependencies in the container. This speeds up builds if
-            # you are also using githubToken. Any dependencies installed here will
-            # be part of the container image that gets cached, so subsequent
-            # builds don't have to re-install them. The image layer is cached
-            # publicly in your project's package repository, so it is vital that
-            # no secrets are present in the container state or logs.
-            install: |
-              case "${{ matrix.distro }}" in
-                  ubuntu*|jessie|stretch|buster)
-                  apt-get update -q -y
-                  apt-get install -q -y git
-                  apt-get install -q -y qml-module-qtmultimedia, libunwind-dev, libgstreamer-plugins-bad1.0-dev, qt5-default, qtdeclarative5-dev, libgstreamer-plugins-base1.0-dev, gstreamer1.0-alsa, gstreamer1.0-libav, gstreamer1.0-plugins-bad, gstreamer1.0-plugins-base-apps, libgstreamer1.0-dev, libglib2.0-dev, qml-module-qtquick2, libtag1-dev, libkf5bluezqt-dev, librtaudio6, librtaudio-dev, pulseaudio, qtconnectivity5-dev, libqt5bluetooth5-bin, libqt5bluetooth5, qtmultimedia5-dev, libqt5multimediawidgets5, libqt5multimedia5-plugins, libqt5multimedia5, protobuf-compiler, protobuf-c-compiler, libprotobuf-dev, libssl-dev, libusb-1.0.0-dev, libboost-all-dev, cmake, alsa-utils
-                  ;;
-                  fedora*)
-                  dnf -y update
-                  dnf -y install git which
-                  ;;
-                  alpine*)
-                  apk update
-                  apk add git
-                  ;;
-              esac
+          # Install some dependencies in the container. This speeds up builds if
+          # you are also using githubToken. Any dependencies installed here will
+          # be part of the container image that gets cached, so subsequent
+          # builds don't have to re-install them. The image layer is cached
+          # publicly in your project's package repository, so it is vital that
+          # no secrets are present in the container state or logs.
+          install: |
+            case "${{ matrix.distro }}" in
+                ubuntu*|jessie|stretch|buster)
+                apt-get update -q -y
+                apt-get install -q -y git
+                apt-get install -q -y qml-module-qtmultimedia, libunwind-dev, libgstreamer-plugins-bad1.0-dev, qt5-default, qtdeclarative5-dev, libgstreamer-plugins-base1.0-dev, gstreamer1.0-alsa, gstreamer1.0-libav, gstreamer1.0-plugins-bad, gstreamer1.0-plugins-base-apps, libgstreamer1.0-dev, libglib2.0-dev, qml-module-qtquick2, libtag1-dev, libkf5bluezqt-dev, librtaudio6, librtaudio-dev, pulseaudio, qtconnectivity5-dev, libqt5bluetooth5-bin, libqt5bluetooth5, qtmultimedia5-dev, libqt5multimediawidgets5, libqt5multimedia5-plugins, libqt5multimedia5, protobuf-compiler, protobuf-c-compiler, libprotobuf-dev, libssl-dev, libusb-1.0.0-dev, libboost-all-dev, cmake, alsa-utils
+                ;;
+                fedora*)
+                dnf -y update
+                dnf -y install git which
+                ;;
+                alpine*)
+                apk update
+                apk add git
+                ;;
+            esac
 
-            # Produce a binary artifact and place it in the mounted volume
-            run: |
-              cd buildsystem
-              ./6_build_gpio2kbd.sh
-              cp $(which git) "/artifacts/${artifact_name}"
-              echo "Produced artifact at /artifacts/${artifact_name}"${PWD}/artifacts"
+          # Produce a binary artifact and place it in the mounted volume
+          run: |
+            cd buildsystem
+            ./6_build_gpio2kbd.sh
+            cp $(which git) "/artifacts/${artifact_name}"
+            echo "Produced artifact at /artifacts/${artifact_name}"${PWD}/artifacts"
 
       - uses: uraimo/run-on-arch-action@v2.0.5
         name: Build camoverlay
         id: build_camoverlay
         with:
-            arch: ${{ matrix.arch }}
-            distro: ${{ matrix.distro }}
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.distro }}
 
-            # Not required, but speeds up builds
-            githubToken: ${{ github.token }}
+          # Not required, but speeds up builds
+          githubToken: ${{ github.token }}
 
-            # Create an artifacts directory
-            setup: |
-              mkdir -p "${PWD}/artifacts"
+          # Create an artifacts directory
+          setup: |
+            mkdir -p "${PWD}/artifacts"
 
-            # Mount the artifacts directory as /artifacts in the container
-            dockerRunArgs: |
-              --volume "${PWD}/artifacts:/artifacts"
+          # Mount the artifacts directory as /artifacts in the container
+          dockerRunArgs: |
+            --volume "${PWD}/artifacts:/artifacts"
 
-            # Pass some environment variables to the container
-            env: | # YAML, but pipe character is necessary
-              artifact_name: camoverlay-${{ matrix.distro }}_${{ matrix.arch }}
+          # Pass some environment variables to the container
+          env: | # YAML, but pipe character is necessary
+            artifact_name: camoverlay-${{ matrix.distro }}_${{ matrix.arch }}
 
-            # The shell to run commands with in the container
-            shell: /bin/sh
+          # The shell to run commands with in the container
+          shell: /bin/sh
 
-            # Install some dependencies in the container. This speeds up builds if
-            # you are also using githubToken. Any dependencies installed here will
-            # be part of the container image that gets cached, so subsequent
-            # builds don't have to re-install them. The image layer is cached
-            # publicly in your project's package repository, so it is vital that
-            # no secrets are present in the container state or logs.
-            install: |
-              case "${{ matrix.distro }}" in
-                  ubuntu*|jessie|stretch|buster)
-                  apt-get update -q -y
-                  apt-get install -q -y git
-                  apt-get install -q -y qml-module-qtmultimedia, libunwind-dev, libgstreamer-plugins-bad1.0-dev, qt5-default, qtdeclarative5-dev, libgstreamer-plugins-base1.0-dev, gstreamer1.0-alsa, gstreamer1.0-libav, gstreamer1.0-plugins-bad, gstreamer1.0-plugins-base-apps, libgstreamer1.0-dev, libglib2.0-dev, qml-module-qtquick2, libtag1-dev, libkf5bluezqt-dev, librtaudio6, librtaudio-dev, pulseaudio, qtconnectivity5-dev, libqt5bluetooth5-bin, libqt5bluetooth5, qtmultimedia5-dev, libqt5multimediawidgets5, libqt5multimedia5-plugins, libqt5multimedia5, protobuf-compiler, protobuf-c-compiler, libprotobuf-dev, libssl-dev, libusb-1.0.0-dev, libboost-all-dev, cmake, alsa-utils
-                  ;;
-                  fedora*)
-                  dnf -y update
-                  dnf -y install git which
-                  ;;
-                  alpine*)
-                  apk update
-                  apk add git
-                  ;;
-              esac
+          # Install some dependencies in the container. This speeds up builds if
+          # you are also using githubToken. Any dependencies installed here will
+          # be part of the container image that gets cached, so subsequent
+          # builds don't have to re-install them. The image layer is cached
+          # publicly in your project's package repository, so it is vital that
+          # no secrets are present in the container state or logs.
+          install: |
+            case "${{ matrix.distro }}" in
+                ubuntu*|jessie|stretch|buster)
+                apt-get update -q -y
+                apt-get install -q -y git
+                apt-get install -q -y qml-module-qtmultimedia, libunwind-dev, libgstreamer-plugins-bad1.0-dev, qt5-default, qtdeclarative5-dev, libgstreamer-plugins-base1.0-dev, gstreamer1.0-alsa, gstreamer1.0-libav, gstreamer1.0-plugins-bad, gstreamer1.0-plugins-base-apps, libgstreamer1.0-dev, libglib2.0-dev, qml-module-qtquick2, libtag1-dev, libkf5bluezqt-dev, librtaudio6, librtaudio-dev, pulseaudio, qtconnectivity5-dev, libqt5bluetooth5-bin, libqt5bluetooth5, qtmultimedia5-dev, libqt5multimediawidgets5, libqt5multimedia5-plugins, libqt5multimedia5, protobuf-compiler, protobuf-c-compiler, libprotobuf-dev, libssl-dev, libusb-1.0.0-dev, libboost-all-dev, cmake, alsa-utils
+                ;;
+                fedora*)
+                dnf -y update
+                dnf -y install git which
+                ;;
+                alpine*)
+                apk update
+                apk add git
+                ;;
+            esac
 
-            # Produce a binary artifact and place it in the mounted volume
-            run: |
-              cd buildsystem
-              ./7_build_camoverlay.sh
-              cp $(which git) "/artifacts/${artifact_name}"
-              echo "Produced artifact at /artifacts/${artifact_name}"
+          # Produce a binary artifact and place it in the mounted volume
+          run: |
+            cd buildsystem
+            ./7_build_camoverlay.sh
+            cp $(which git) "/artifacts/${artifact_name}"
+            echo "Produced artifact at /artifacts/${artifact_name}"
   
       - uses: uraimo/run-on-arch-action@v2.0.5
         name: Build usbreset
         id: build_usbreset
         with:
-            arch: ${{ matrix.arch }}
-            distro: ${{ matrix.distro }}
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.distro }}
 
-            # Not required, but speeds up builds
-            githubToken: ${{ github.token }}
+          # Not required, but speeds up builds
+          githubToken: ${{ github.token }}
 
-            # Create an artifacts directory
-            setup: |
-              mkdir -p "${PWD}/artifacts"
+          # Create an artifacts directory
+          setup: |
+            mkdir -p "${PWD}/artifacts"
 
-            # Mount the artifacts directory as /artifacts in the container
-            dockerRunArgs: |
-              --volume "${PWD}/artifacts:/artifacts"
+          # Mount the artifacts directory as /artifacts in the container
+          dockerRunArgs: |
+            --volume "${PWD}/artifacts:/artifacts"
 
-            # Pass some environment variables to the container
-            env: | # YAML, but pipe character is necessary
-              artifact_name: usbreset-${{ matrix.distro }}_${{ matrix.arch }}
+          # Pass some environment variables to the container
+          env: | # YAML, but pipe character is necessary
+            artifact_name: usbreset-${{ matrix.distro }}_${{ matrix.arch }}
 
-            # The shell to run commands with in the container
-            shell: /bin/sh
+          # The shell to run commands with in the container
+          shell: /bin/sh
 
-            # Install some dependencies in the container. This speeds up builds if
-            # you are also using githubToken. Any dependencies installed here will
-            # be part of the container image that gets cached, so subsequent
-            # builds don't have to re-install them. The image layer is cached
-            # publicly in your project's package repository, so it is vital that
-            # no secrets are present in the container state or logs.
-            install: |
-              case "${{ matrix.distro }}" in
-                  ubuntu*|jessie|stretch|buster)
-                  apt-get update -q -y
-                  apt-get install -q -y git apt5-utils
-                  apt-get install -q -y qml-module-qtmultimedia, libunwind-dev, libgstreamer-plugins-bad1.0-dev, qt5-default, qtdeclarative5-dev, libgstreamer-plugins-base1.0-dev, gstreamer1.0-alsa, gstreamer1.0-libav, gstreamer1.0-plugins-bad, gstreamer1.0-plugins-base-apps, libgstreamer1.0-dev, libglib2.0-dev, qml-module-qtquick2, libtag1-dev, libkf5bluezqt-dev, librtaudio6, librtaudio-dev, pulseaudio, qtconnectivity5-dev, libqt5bluetooth5-bin, libqt5bluetooth5, qtmultimedia5-dev, libqt5multimediawidgets5, libqt5multimedia5-plugins, libqt5multimedia5, protobuf-compiler, protobuf-c-compiler, libprotobuf-dev, libssl-dev, libusb-1.0.0-dev, libboost-all-dev, cmake, alsa-utils
-                  ;;
-                  fedora*)
-                  dnf -y update
-                  dnf -y install git which
-                  ;;
-                  alpine*)
-                  apk update
-                  apk add git
-                  ;;
-              esac
+          # Install some dependencies in the container. This speeds up builds if
+          # you are also using githubToken. Any dependencies installed here will
+          # be part of the container image that gets cached, so subsequent
+          # builds don't have to re-install them. The image layer is cached
+          # publicly in your project's package repository, so it is vital that
+          # no secrets are present in the container state or logs.
+          install: |
+            case "${{ matrix.distro }}" in
+                ubuntu*|jessie|stretch|buster)
+                apt-get update -q -y
+                apt-get install -q -y git apt5-utils
+                apt-get install -q -y qml-module-qtmultimedia, libunwind-dev, libgstreamer-plugins-bad1.0-dev, qt5-default, qtdeclarative5-dev, libgstreamer-plugins-base1.0-dev, gstreamer1.0-alsa, gstreamer1.0-libav, gstreamer1.0-plugins-bad, gstreamer1.0-plugins-base-apps, libgstreamer1.0-dev, libglib2.0-dev, qml-module-qtquick2, libtag1-dev, libkf5bluezqt-dev, librtaudio6, librtaudio-dev, pulseaudio, qtconnectivity5-dev, libqt5bluetooth5-bin, libqt5bluetooth5, qtmultimedia5-dev, libqt5multimediawidgets5, libqt5multimedia5-plugins, libqt5multimedia5, protobuf-compiler, protobuf-c-compiler, libprotobuf-dev, libssl-dev, libusb-1.0.0-dev, libboost-all-dev, cmake, alsa-utils
+                ;;
+                fedora*)
+                dnf -y update
+                dnf -y install git which
+                ;;
+                alpine*)
+                apk update
+                apk add git
+                ;;
+            esac
 
-            # Produce a binary artifact and place it in the mounted volume
-            run: |
-              cd buildsystem
-              ./8_build_usbreset.sh
-              cp $(which git) "/artifacts/${artifact_name}"
-              echo "Produced artifact at /artifacts/${artifact_name}"
+          # Produce a binary artifact and place it in the mounted volume
+          run: |
+            cd buildsystem
+            ./8_build_usbreset.sh
+            cp $(which git) "/artifacts/${artifact_name}"
+            echo "Produced artifact at /artifacts/${artifact_name}"
 
       - name: Show the artifact
         # Items placed in /artifacts in the container will be in
