@@ -67,7 +67,7 @@ jobs:
           #!/bin/bash -e
           on_chroot << END
           echo "Build Prebuilts"
-          cd /home/${FIRST_USER_NAME}/prebuilts/buildsystem
+          cd /prebuilts/buildsystem
           find . -type f -iname "*.sh" -exec {} \;
           for script in `ls *.sh | sort -n`; do printf "Executing script: %s\n" "$script"; ./"$script"; done;
           for file in `ls BINARY_FILES/* | sort -n`; do printf "Generating MD5 for: %s\n" "$file"; md5sum "$script" > "$script".md5; done;
