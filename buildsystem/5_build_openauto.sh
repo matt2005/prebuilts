@@ -11,7 +11,7 @@ cd $HOME
 
 # clone git repo
 if [ ! -d openauto ]; then
-    git clone -b csng-alpha5.5 https://github.com/opencardev/openauto.git
+    git clone -b csng-alpha5.5 https://github.com/matt2005/openauto.git
 else
     cd openauto
     git reset --hard
