@@ -37,10 +37,10 @@ if [ -f ./cam_overlay/cam_overlay.bin ]; then
 fi
 
 # Create compressed qt5
-QTVERSON=`cat /usr/local/qt5/lib/pkgconfig/Qt5Core.pc | grep Version: | cut -d: -f2 | sed 's/ //g' | sed 's/\.//g'`
+#QTVERSON=`cat /usr/local/qt5/lib/pkgconfig/Qt5Core.pc | grep Version: | cut -d: -f2 | sed 's/ //g' | sed 's/\.//g'`
 
-tar -cvf $HOME/BINARY_FILES/Qt_${QTVERSON}_OpenGLES2.tar.xz /usr/local/qt5
-split -b 50m -d $HOME/BINARY_FILES/Qt_${QTVERSON}_OpenGLES2.tar.xz "$HOME/BINARY_FILES/Qt_${QTVERSON}_OpenGLES2.tar.xz.part"
-rm $HOME/BINARY_FILES/Qt_${QTVERSON}_OpenGLES2.tar.xz
+#tar -cvf $HOME/BINARY_FILES/Qt_${QTVERSON}_OpenGLES2.tar.xz /usr/local/qt5
+#split -b 50m -d $HOME/BINARY_FILES/Qt_${QTVERSON}_OpenGLES2.tar.xz "$HOME/BINARY_FILES/Qt_${QTVERSON}_OpenGLES2.tar.xz.part"
+#rm $HOME/BINARY_FILES/Qt_${QTVERSON}_OpenGLES2.tar.xz
 
 cd $HOME

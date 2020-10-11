@@ -1,7 +1,7 @@
 #!/bin/bash
 # Install Pre-reqs
 sudo apt-get -y install cmake build-essential git
-sudo apt-get -y install libboost-all-dev libusb-1.0.0-dev libssl-dev cmake libprotobuf-dev protobuf-c-compiler protobuf-compiler libqt5multimedia5 libqt5multimedia5-plugins libqt5multimediawidgets5 qtmultimedia5-dev libqt5bluetooth5 libqt5bluetooth5-bin qtconnectivity5-dev pulseaudio librtaudio-dev
+sudo apt-get -y install libboost-all-dev libusb-1.0.0-dev libssl-dev cmake libprotobuf-dev protobuf-c-compiler protobuf-compiler libqt5multimedia5 libqt5multimedia5-plugins libqt5multimediawidgets5 qtmultimedia5-dev libqt5bluetooth5 libqt5bluetooth5-bin qtconnectivity5-dev pulseaudio librtaudio-dev libgps-dev
 
 # Set current folder as home
 HOME="`cd $0 >/dev/null 2>&1; pwd`" >/dev/null 2>&1
@@ -11,7 +11,7 @@ cd $HOME
 
 # clone git repo
 if [ ! -d openauto ]; then
-    git clone -b crankshaft-ng https://github.com/opencardev/openauto.git
+    git clone -b csng-alpha5.5 https://github.com/opencardev/openauto.git
 else
     cd openauto
     git reset --hard
