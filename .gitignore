@@ -8,5 +8,4 @@ buildsystem/qt510/*
 buildsystem/qt510_build/*
 buildsystem/qt511/*
 buildsystem/qt511_build/*
-buildsystem/**
 debug.log
