@@ -20,7 +20,7 @@ jobs:
             distro: buster
 
     steps:
-      - uses: actions/checkout@v2.1.0
+      - uses: actions/checkout@v2.3.4
       - uses: uraimo/run-on-arch-action@v2.0.5
         name: Build AASDK
         id: build_aadsk
