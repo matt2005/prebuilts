@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2.1.0
-      - uses: uraimo/run-on-arch-action@v2.0.5
+      - uses: uraimo/run-on-arch-action@v2.0.9
         name: Build AASDK
         id: build_aadsk
         with:
@@ -76,7 +76,7 @@ jobs:
             cp $(which git) "/artifacts/${artifact_name}"
             echo "Produced artifact at /artifacts/${artifact_name}"
 
-      - uses: uraimo/run-on-arch-action@v2.0.5
+      - uses: uraimo/run-on-arch-action@v2.0.9
         name: Build ilclient
         id: build_ilclient
         with:
@@ -131,7 +131,7 @@ jobs:
             cp $(which git) "/artifacts/${artifact_name}"
             echo "Produced artifact at /artifacts/${artifact_name}"
 
-      - uses: uraimo/run-on-arch-action@v2.0.5
+      - uses: uraimo/run-on-arch-action@v2.0.9
         name: Build openauto
         id: build_openauto
         with:
@@ -186,7 +186,7 @@ jobs:
             cp $(which git) "/artifacts/${artifact_name}"
             echo "Produced artifact at /artifacts/${artifact_name}"
 
-      - uses: uraimo/run-on-arch-action@v2.0.5
+      - uses: uraimo/run-on-arch-action@v2.0.9
         name: Build gpio2kbd
         id: build_gpio2kbd
         with:
@@ -241,7 +241,7 @@ jobs:
             cp $(which git) "/artifacts/${artifact_name}"
             echo "Produced artifact at /artifacts/${artifact_name}"${PWD}/artifacts"
 
-      - uses: uraimo/run-on-arch-action@v2.0.5
+      - uses: uraimo/run-on-arch-action@v2.0.9
         name: Build camoverlay
         id: build_camoverlay
         with:
@@ -296,7 +296,7 @@ jobs:
             cp $(which git) "/artifacts/${artifact_name}"
             echo "Produced artifact at /artifacts/${artifact_name}"
   
-      - uses: uraimo/run-on-arch-action@v2.0.5
+      - uses: uraimo/run-on-arch-action@v2.0.9
         name: Build usbreset
         id: build_usbreset
         with:
